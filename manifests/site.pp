@@ -16,8 +16,11 @@ node metamorf {
   include upgrade::profile::ftp
   include upgrade::profile::svn
   include upgrade::profile::git
+  include upgrade::profile::nagios-server
+  include upgrade::profile::nagios-nrpe
   include upgrade::profile::backup-server
   include upgrade::base::additionals
+  include upgrade::bzflag
 }
 
 # ViM modeline {{{1

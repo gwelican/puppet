@@ -26,6 +26,21 @@ class upgrade::base {
   include upgrade::vim
   include upgrade::eix
   include upgrade::portage
+  include upgrade::gentoo-sources
+  include upgrade::rrdtool
+  include upgrade::rsync
+  include upgrade::openssl
+  include upgrade::shorewall
+  include upgrade::iptables
+  include upgrade::zsh
+  include upgrade::weechat
+  include upgrade::gentoolkit
+  include upgrade::bzip2
+  include upgrade::man
+  include upgrade::man-pages
+  include upgrade::lsof
+  include upgrade::wget
+  include upgrade::genkernel
 }
 class upgrade::base::additionals {
   include upgrade::elinks
@@ -39,6 +54,9 @@ class upgrade::base::additionals {
 # Profiles {{{1
 class upgrade::profile::web inherits upgrade::base {
   include upgrade::lighttpd
+}
+class upgrade::profile::nginx inherits upgrade::base {
+  include upgrade::nginx
 }
 class upgrade::profile::php  inherits upgrade::base {
   include upgrade::php
@@ -61,6 +79,8 @@ class upgrade::profile::ftp inherits upgrade::base {
 class upgrade::profile::media inherits upgrade::base {
   include upgrade::ffmpeg
   include upgrade::vlc
+  include upgrade::mplayer
+  include upgrade::imagemagick
 }
 class upgrade::profile::svn inherits upgrade::base {
   include upgrade::subversion
