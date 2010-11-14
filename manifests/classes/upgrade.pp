@@ -67,10 +67,10 @@ class upgrade::profile::rtorrent inherits upgrade::base {
 class upgrade::profile::utorrent inherits upgrade::base {
   include upgrade::wine
 }
-class upgrade::profile::backup-server inherits upgrade::base {
+class upgrade::profile::backup::server inherits upgrade::base {
   include upgrade::bacula::server
 }
-class upgrade::profile::backup-client inherits upgrade::base {
+class upgrade::profile::backup::client inherits upgrade::base {
   include upgrade::bacula::client
 }
 class upgrade::profile::ftp inherits upgrade::base {
@@ -87,12 +87,6 @@ class upgrade::profile::svn inherits upgrade::base {
 }
 class upgrade::profile::git inherits upgrade::base {
   include upgrade::git
-}
-class upgrade::profile::nagios::server inherits upgrade::base {
-  include upgrade::nagios-core
-}
-class upgrade::profile::nagios::nrpe inherits upgrade::base {
-  include upgrade::nagios-nrpe
 }
 # Upgrades {{{1
 class upgrade::ffmpeg {
@@ -155,12 +149,12 @@ class upgrade::lighttpd {
     [lighttpd]:       category => 'www-servers',      use => 'bzip2 php ssl fastcgi doc memcache';
   }
 }
-class upgrade::nagios::server inherits upgrade::nagios::client {
+class upgrade::profile::nagios::server inherits upgrade::profile::nagios::client {
   upgrade::package {
     [nagios-core]:    category => 'net-analyzer',     use => 'lighttpd vim-syntax debug';
   }
 }
-class upgrade::nagios::client {
+class upgrade::profile::nagios::client inherits upgrade::base {
   upgrade::package {
     [nagios-plugins]: category => 'net-analyzer',     use => 'ssl mysql nagios-dns nagios-ntp nagios-ping nagios-ssh';
   }
@@ -447,7 +441,7 @@ class upgrade::pciutils {
     [pciutils]: category =>  'sys-apps';
   }
 }
-class upgrade::nagios-nrpe {
+class upgrade::profile::nagios::nrpe {
   upgrade::package {
     [nagios-nrpe]: category =>  'net-analyzer';
   }
