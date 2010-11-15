@@ -5,6 +5,10 @@ import "classes/*.pp"
 #$fileserver = "puppet://gwelican.eu/global/"
 filebucket { main: server => puppet }
 
+node gandalf {
+  include gentoo::etc::portage
+  include upgrade::profile::selinux
+}
 node metamorf {
   info('gwelican.eu')
   include gentoo::etc::portage

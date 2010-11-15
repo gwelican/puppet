@@ -57,6 +57,18 @@ class upgrade::base::additionals {
   include upgrade::wireshark
 }
 # Profiles {{{1
+class upgrade::selinux inherits upgrade::base {
+  gentoo_unmask{"selinux-bind":
+    context => "service_selinux_bind",
+    package => "sec-policy/selinux-bind",
+    tag => "package",
+  }
+  gentoo_unmask{"selinux-logrotate":
+    context => "service_selinux_logrotate",
+    package => "sec-policy/selinux-logrotate",
+    tag => "package",
+  }
+}
 class upgrade::profile::x inherits upgrade::base {
   include upgrade::xorg::server
 #  include upgrade::xterm
