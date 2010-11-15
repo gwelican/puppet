@@ -44,6 +44,8 @@ class upgrade::base {
   include upgrade::pam
   include upgrade::udev
   include upgrade::baselayout
+  include upgrade::perl
+  include upgrade::bitlbee
 }
 class upgrade::base::additionals {
   include upgrade::elinks
@@ -55,6 +57,10 @@ class upgrade::base::additionals {
   include upgrade::wireshark
 }
 # Profiles {{{1
+class upgrade::profile::x inherits upgrade::base {
+  include upgrade::xorg::server
+#  include upgrade::xterm
+}
 class upgrade::profile::web inherits upgrade::base {
   include upgrade::lighttpd
 }
@@ -92,6 +98,11 @@ class upgrade::profile::git inherits upgrade::base {
   include upgrade::git
 }
 # Upgrades {{{1
+class upgrade::xterm {
+  upgrade::package {
+    [xterm]:         category => 'x11-terms',      use => 'truetype unicode ';
+  }
+}
 class upgrade::ffmpeg {
   upgrade::package {
     [ffmpeg]:         category => 'media-video',      use => 'theora x264 xvid ogg network mmx encode threads aac truetype';
@@ -589,7 +600,16 @@ class upgrade::php {
     [php]:            category => 'dev-lang', use => '-apache -berkdb -ipv6 -apache2 bzip2 calendar hash json threads mhash xml truetype xmlreader xmlrpc xmlwriter xsl ftp gd sockets simplexml tidy curl fastbuild posix bcmath sqlite ctype pcre cgi postgres session pdo fpm zip -recode -cli -exif -esoob -phar -wddx -sysvipc -sybase-ct -suhosin -oci8 -oci8-instant-client -odbc -pcntl -qdbm -sapdb -mssql -snmp -soap -gdbm -ldap -sharedext cli mysql';
   }
 }
-
+class upgrade::bitlbee {
+  upgrade::package {
+    [bitlbee]:  category => 'net-im', use => 'gnutls msn plugins purple twitter jabber -oscar otr';
+  }
+}
+class upgrade::perl {
+  upgrade::package {
+    [perl]:  category => 'dev-lang', use => 'berkdb gdbm';
+  }
+}
 # USE flags {{{1
 class upgrade::portageflags {
   gentoo_use_flags {"gmime":
@@ -620,12 +640,6 @@ class upgrade::portageflags {
     context => "service_xmlrpc-c",
     package => "dev-libs/xmlrpc-c",
     use => "libwww curl",
-    tag => "package",
-  }
-  gentoo_use_flags {"bitlbee":
-    context => "service_bitlbee",
-    package => "net-im/bitlbee",
-    use => "gnutls msn",
     tag => "package",
   }
   gentoo_use_flags {"GD":
