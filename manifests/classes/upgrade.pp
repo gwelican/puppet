@@ -41,6 +41,9 @@ class upgrade::base {
   include upgrade::lsof
   include upgrade::wget
   include upgrade::genkernel
+  include upgrade::pam
+  include upgrade::udev
+  include upgrade::baselayout
 }
 class upgrade::base::additionals {
   include upgrade::elinks
@@ -97,6 +100,21 @@ class upgrade::ffmpeg {
 class upgrade::ssh {
   upgrade::package {
     [openssh]:        category => 'net-misc',         use => '-X';
+  }
+}
+class upgrade::baselayout {
+  upgrade::package {
+    [baselayout]:     category => 'sys-apps',      use => ''
+  }
+}
+class upgrade::udev {
+  upgrade::package {
+    [udev]:     category => 'sys-fs',      use => '';
+  }
+}
+class upgrade::pam {
+  upgrade::package {
+    [pam]:     category => 'sys-libs',      use => 'berkdb cracklib nls';
   }
 }
 class upgrade::cron {
@@ -568,12 +586,18 @@ class upgrade::mozilla-firefox {
 }
 class upgrade::php {
   upgrade::package {
-    [php]:            category => 'dev-lang', use => '-apache -berkdb -ipv6 -apache2 bzip2 calendar hash json threads mhash xml truetype xmlreader xmlrpc xmlwriter xsl ftp gd sockets simplexml tidy curl fastbuild posix bcmath sqlite ctype pcre cgi postgres session pdo fpm zip -recode -cli -exif -esoob -phar -wddx -sysvipc -sybase-ct -suhosin -oci8 -oci8-instant-client -odbc -pcntl -qdbm -sapdb -mssql -snmp -soap -gdbm -ldap -sharedext';
+    [php]:            category => 'dev-lang', use => '-apache -berkdb -ipv6 -apache2 bzip2 calendar hash json threads mhash xml truetype xmlreader xmlrpc xmlwriter xsl ftp gd sockets simplexml tidy curl fastbuild posix bcmath sqlite ctype pcre cgi postgres session pdo fpm zip -recode -cli -exif -esoob -phar -wddx -sysvipc -sybase-ct -suhosin -oci8 -oci8-instant-client -odbc -pcntl -qdbm -sapdb -mssql -snmp -soap -gdbm -ldap -sharedext cli mysql';
   }
 }
 
 # USE flags {{{1
 class upgrade::portageflags {
+  gentoo_use_flags {"gmime":
+    context => "service_gmime",
+    package => "dev-libs/gmime",
+    use => "mono",
+    tag => "package",
+  }
   gentoo_use_flags {"mpd":
     context => "service_mpd",
     package => "media-sound/mpd",
