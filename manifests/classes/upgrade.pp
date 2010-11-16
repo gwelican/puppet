@@ -8,6 +8,7 @@
 # Upgrade bundles {{{1
 class upgrade::base {
   include upgrade::ssh
+  include upgrade::augeas
   include upgrade::cron
   include upgrade::cron
   include upgrade::screen
@@ -121,6 +122,11 @@ class upgrade::profile::git inherits upgrade::base {
   include upgrade::git
 }
 # Upgrades {{{1
+class upgrade::augeas {
+  upgrade::package {
+    [augeas]:         category => 'app-admin',      use => 'doc';
+  }
+}
 class upgrade::xterm {
   upgrade::package {
     [xterm]:         category => 'x11-terms',      use => 'truetype unicode ';
