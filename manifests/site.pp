@@ -12,6 +12,7 @@ node gandalf {
 node metamorf {
   info('gwelican.eu')
   include gentoo::etc::portage
+  include gentoo::portage::sync
   include upgrade::portageflags
   include upgrade::profile::web
   include upgrade::profile::media

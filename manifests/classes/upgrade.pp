@@ -6,57 +6,68 @@
 ########################################
 
 # Upgrade bundles {{{1
-class upgrade::base {
-  include upgrade::ssh
-  include upgrade::augeas
-  include upgrade::cron
-  include upgrade::cron
-  include upgrade::screen
-  include upgrade::tar
-  include upgrade::gzip
-  include upgrade::readline
-  include upgrade::logrotate
-  include upgrade::findutils
-  include upgrade::nano
-  include upgrade::facter
-  include upgrade::syslog-ng
-  include upgrade::hdparm
-  include upgrade::bind
-  include upgrade::python
-  include upgrade::ruby
-  include upgrade::vim
-  include upgrade::eix
-  include upgrade::portage
-  include upgrade::gentoo-sources
-  include upgrade::rrdtool
-  include upgrade::rsync
-  include upgrade::openssl
-  include upgrade::shorewall
-  include upgrade::iptables
-  include upgrade::zsh
-  include upgrade::weechat
-  include upgrade::gentoolkit
-  include upgrade::bzip2
-  include upgrade::man
-  include upgrade::man-pages
-  include upgrade::lsof
-  include upgrade::wget
-  include upgrade::genkernel
-  include upgrade::pam
-  include upgrade::udev
-  include upgrade::baselayout
-  include upgrade::perl
-  include upgrade::bitlbee
+  class upgrade::base {
+    include upgrade::ssh
+      include upgrade::augeas
+      include upgrade::cron
+      include upgrade::cron
+      include upgrade::screen
+      include upgrade::tar
+      include upgrade::gzip
+      include upgrade::readline
+      include upgrade::logrotate
+      include upgrade::findutils
+      include upgrade::nano
+      include upgrade::facter
+      include upgrade::syslog-ng
+      include upgrade::hdparm
+      include upgrade::bind
+      include upgrade::python
+      include upgrade::ruby
+      include upgrade::vim
+      include upgrade::eix
+      include upgrade::portage
+      include upgrade::gentoo-sources
+      include upgrade::rrdtool
+      include upgrade::rsync
+      include upgrade::openssl
+      include upgrade::shorewall
+      include upgrade::iptables
+      include upgrade::zsh
+      include upgrade::weechat
+      include upgrade::gentoolkit
+      include upgrade::bzip2
+      include upgrade::man
+      include upgrade::man-pages
+      include upgrade::lsof
+      include upgrade::wget
+      include upgrade::genkernel
+      include upgrade::pam
+      include upgrade::udev
+      include upgrade::baselayout
+      include upgrade::perl
+      include upgrade::bitlbee
+  }
+  class upgrade::base::additionals {
+    include upgrade::elinks
+      include upgrade::nmap
+      include upgrade::genlop
+      include upgrade::lftp
+      include upgrade::iperf
+      include upgrade::unrar
+      include upgrade::wireshark
+  }
+  class gentoo::portage::sync {
+    schedule{ daily:
+      range => "2 - 4",
+      repeat => 1,
+    }
+    exec {"/usr/bin/eix-sync -q":
+      schedule => daily,
+      timeout => 7200,
+    }
 }
-class upgrade::base::additionals {
-  include upgrade::elinks
-  include upgrade::nmap
-  include upgrade::genlop
-  include upgrade::lftp
-  include upgrade::iperf
-  include upgrade::unrar
-  include upgrade::wireshark
-}
+
 # Profiles {{{1
 class upgrade::selinux {
   gentoo_keywords{"selinux-base-policy":
